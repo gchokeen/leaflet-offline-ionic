@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "leaflet-offline-ionic",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
