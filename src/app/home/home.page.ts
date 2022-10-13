@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 import { Map, latLng, tileLayer, Layer, marker, CRS } from 'leaflet';
 import * as L from 'leaflet';
-import 'leaflet.offline';
-
+import * as O from 'leaflet.offline';
+import { TileLayerOffline } from 'leaflet.offline/src/TileLayerOffline';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -19,9 +19,6 @@ export class HomePage {
 
 
   constructor() { }
-
-
-
   onMapReady() {
     setTimeout(() => {
       this.map.invalidateSize();
@@ -62,17 +59,20 @@ export class HomePage {
 
 
 
-      // @ts-ignore   
-      const baseLayer = L.tileLayer.offline
-        (query, {}, {}).addTo(this.map);
+      // @ts-ignore
+      console.log(O);
+      const baseLayer: TileLayerOffline = O.tileLayerOffline(query, {});
+
+        this.map.addLayer(baseLayer);
 
 
       // add buttons to save tiles in area viewed
       //@ts-ignore
-      const control = L.control.savetiles(baseLayer, {
+      const control: any = O.savetiles(baseLayer, {
         zoomlevels: [13, 16], // optional zoomlevels to save, default current zoomlevel
         confirm(layer, successCallback) {
           // eslint-disable-next-line no-alert
+          debugger;
           if (window.confirm(`Save ${layer._tilesforSave.length}`)) {
             successCallback();
           }
@@ -83,15 +83,16 @@ export class HomePage {
             successCallback();
           }
         },
-        saveText:
-          'xx<i class="fa fa-download" aria-hidden="true" title="Save tiles"></i>',
-        rmText: '<i class="fa fa-trash" aria-hidden="true"  title="Remove tiles"></i>',
+        saveText:`<ion-icon name="save"></ion-icon>`,
+        rmText: `<ion-icon name="trash"></ion-icon>`,
       });
-      control.addTo(this.map);
-
+      console.log('Control', control);
+      this.map.addControl(control);
 
     }, 10);
 
+
+    
 
 
 
